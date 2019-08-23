@@ -69,6 +69,8 @@ exports.update = (req, res) =>{
               return res.status(404).send({message : "todo not found with this id !" + req.params.todoId})
           }
           res.send(todo);
+          pushService.sendPush('update', todo.title);
+
       })
       .catch(err =>{
           if(err.kind === 'ObjectId'){
@@ -89,6 +91,8 @@ exports.delete = (req, res) => {
                 return res.status(404).send({message : "Todo cannot be find at this Id "+req.params.todoId});
             }
             res.send({message : "Todo deletion successful !"});
+            pushService.sendPush('delete', todo.title);
+
         })
         .catch(err => {
             if(err.kind === 'ObjectId' || err.name === 'NotFound') {
