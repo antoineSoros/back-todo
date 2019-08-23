@@ -1,4 +1,5 @@
 const Todo = require('../model/todo.model');
+const pushService = require('../service/push.service');
 
 exports.create = (req, res)=>{
     if(!req.body){
@@ -12,6 +13,7 @@ exports.create = (req, res)=>{
     });
     todo.save().then(data =>{
         res.send(data);
+        pushService.sendPush('new', todo.title);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Something wrong while creating the task."
